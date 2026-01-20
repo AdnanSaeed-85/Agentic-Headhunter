@@ -14,6 +14,7 @@ from langchain_core.runnables import RunnableConfig
 from langgraph.prebuilt import ToolNode, tools_condition
 from tool import add
 from prompts import MEMORY_PROMPT, SYSTEM_PROMPT_TEMPLATE
+from langgraph.checkpoint.postgres import PostgresSaver
 
 #-------------------------------------- Load and init LLMs ------------------------------------------
 load_dotenv()
@@ -72,6 +73,7 @@ def chat_node(state: state_class, config: RunnableConfig, store: BaseStore):
     try:
         user_id = config['configurable']['user_id']
         namespace = ('user', user_id, 'details')
+
         
         # Retrieve memories
         items = store.search(namespace)
@@ -98,7 +100,6 @@ def main():
     graph = StateGraph(state_class)
     graph.add_node('chat_node', chat_node)
     graph.add_node('remember_node', remember_node)
-    graph.add_node('tool_node', tool_node)
     
     graph.add_edge(START, 'remember_node')
     graph.add_edge('remember_node', 'chat_node')
@@ -119,10 +120,19 @@ def main():
 
     # Database connection
     DB_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}?sslmode=disable"
-    with PostgresStore.from_conn_string(DB_URI) as store:
+    with PostgresStore.from_conn_string(DB_URI) as store, \
+        PostgresSaver.from_conn_string(DB_URI) as checkpointer:
+
         store.setup()
-        bot = graph.compile(store=store)
-        config = {'configurable': {'user_id': 'new_user'}}
+        checkpointer.setup()
+        bot = graph.compile(
+            store=store,
+            checkpointer=checkpointer
+        )
+
+        user_name = 'dani'
+        thread_id = 't2'
+        config = {'configurable': {'user_id': user_name, 'thread_id': thread_id}}
         
         print("🤖 Chatbot ready! Type 'exit', 'bye', or 'quit' to end.\n")
         
@@ -137,14 +147,13 @@ def main():
                 if not user_input.strip():
                     continue
                 
-                # REMOVED the hardcoded instruction - let user control their own preferences
                 response = bot.invoke(
                     {"messages": [{"role": "user", "content": user_input}]}, 
                     config
                 )
                 print(f"🤖: {response['messages'][-1].content}\n")
                 
-                namespace = ('user', 'new_user', 'details')
+                namespace = ('user', user_name, 'details')
                 previous = store.search(namespace)
                 for it in previous:
                     print(f"STORED DATA:- {it.value['data']}")
