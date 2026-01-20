@@ -1,0 +1,52 @@
+=== MY HEADHUNTER REPORT ===
+
+JOB LINK: https://ae.indeed.com/viewjob?jk=56875bb35a59927f
+SCORE: 80%
+SUMMARY: I fit this role because my experience in developing and deploying AI-based solutions, such as autonomous web agents and multi-agent conversational AI, aligns with the job's requirements for designing and deploying innovative AI systems.
+MISSING: Experience in computer vision, which is listed as a required skill for the AI Developer role, is not mentioned in my resume.
+----------------------------------------
+JOB LINK: https://ae.indeed.com/viewjob?jk=3fc9a5b209927ea3
+SCORE: 80%
+SUMMARY: I fit this role because my experience in building scalable and multi-functional AI systems, along with my technical skills in languages such as Python and AI frameworks like LangChain, align with the company's need for a software engineer who can design, develop, and maintain software applications.
+MISSING: Experience with software security, as the job description emphasizes the importance of ensuring software security, which is not explicitly mentioned in my resume.
+----------------------------------------
+JOB LINK: https://ae.indeed.com/viewjob?jk=7e07ed8e1b478b55
+SCORE: 80%
+SUMMARY: I fit this role because my experience in AI and machine learning, particularly in developing autonomous agents and integrating AI tools, aligns with the requirements of the Salesforce AI & Automation Associate position.
+MISSING: Salesforce Einstein AI & AgentForce solutions expertise, as my background is more focused on general AI and machine learning frameworks such as LangChain, LangGraph, and TensorFlow, rather than specific Salesforce technologies.
+----------------------------------------
+JOB LINK: https://ae.indeed.com/viewjob?jk=8f3ed96d66de1803
+SCORE: 90%
+SUMMARY: I fit this role because my strong academic background, hands-on experience in building scalable AI systems, and expertise in AI frameworks such as LangChain and LangGraph align with the job requirements and responsibilities.
+MISSING: Basic knowledge of Computer Vision, which is one of the AI technologies mentioned in the job description that I don't have explicitly listed in my technical skills.
+----------------------------------------
+JOB LINK: https://ae.indeed.com/viewjob?jk=c7b636383f45590e
+SCORE: 60%
+SUMMARY: I fit this role because my experience in AI and machine learning, particularly with LangChain, LangGraph, and RAG architectures, aligns with the job's requirements for managing AI workloads and integrating cloud-native AI services.
+MISSING: Container Orchestration using Kubernetes, as my resume does not mention experience with containerized AI workloads or Kubernetes, which is a key responsibility in the job description.
+----------------------------------------
+JOB LINK: https://ae.indeed.com/viewjob?jk=803e6b8cbd9f00d5
+SCORE: 85%
+SUMMARY: I fit this role because my experience in building scalable AI systems, expertise in LangGraph, MCP, and RAG architectures, and strong academic background align with the company's goal of advancing their platform to become more intelligent.
+MISSING: Experience with Generative AI for tasks such as data enrichment, smart content understanding, and automated decision-making, which is a key focus of the company's initiatives.
+----------------------------------------
+JOB LINK: https://ae.indeed.com/viewjob?jk=791221320ce3aa92
+SCORE: 85%
+SUMMARY: I fit this role because my experience in building scalable and multi-functional AI systems, as well as my expertise in LangGraph, MCP, and RAG architectures, aligns with the company's goal of establishing a cutting-edge AI team to enhance the energy experience for customers and internal operations.
+MISSING: Experience with Very Large Models (VLM) or Large Language Models (LLM) specifically for consumer-focused features, which is mentioned as a tool to be leveraged in the Speedy Onboarding process.
+----------------------------------------
+JOB LINK: https://ae.indeed.com/viewjob?jk=5f30a7305a15a114
+SCORE: 85%
+SUMMARY: I fit this role because my experience in building scalable AI systems, expertise in LangGraph, MCP, and RAG architectures, and strong coding skills in Python align with the job requirements for an AI Automation & Workflows Engineer.
+MISSING: Experience with agent memory, prompt engineering, or RLHF models, which is listed as a bonus skill in the job description, is a key area where I lack expertise.
+----------------------------------------
+JOB LINK: https://ae.indeed.com/viewjob?jk=ec44482fc0bffce1
+SCORE: 90%
+SUMMARY: I fit this job description because my experience with LangChain, LangGraph, and RAG architectures, as well as my proficiency in Python, SQL, and AI frameworks, aligns with the required skills for the AI Engineer position.
+MISSING: Experience with text-to-SQL models, specifically integrating them to convert natural language queries into database operations, is a skill that I appear to be missing based on the provided job description and my resume.
+----------------------------------------
+JOB LINK: https://ae.indeed.com/viewjob?jk=fd50e8d0c47ce4b2
+SCORE: 80%
+SUMMARY: I fit this role because my experience in AI and machine learning, particularly with LangGraph, MCP, and RAG architectures, aligns with the job's requirements for generative AI and large language models expertise.
+MISSING: Proficiency in PyTorch, as the job requires experience with this programming language, which is not listed in my technical skills.
+----------------------------------------

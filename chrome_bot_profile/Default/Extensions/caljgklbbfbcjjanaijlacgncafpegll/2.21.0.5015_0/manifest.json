@@ -1,0 +1,52 @@
+{
+   "action": {
+      "default_icon": {
+         "16": "images/icons/16x16.png",
+         "24": "images/icons/24x24.png",
+         "32": "images/icons/32x32.png"
+      },
+      "default_title": "Avira Password Manager"
+   },
+   "author": "Avira Operations GmbH & Co. KG",
+   "background": {
+      "service_worker": "background.js"
+   },
+   "content_scripts": [ {
+      "all_frames": false,
+      "js": [ "js/content/content-inject.js" ],
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_idle"
+   }, {
+      "all_frames": true,
+      "js": [ "js/content/iframe_content.js" ],
+      "matches": [ "http://*/*", "https://*/*" ],
+      "run_at": "document_idle"
+   } ],
+   "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'"
+   },
+   "default_locale": "en",
+   "description": "__MSG_extDescription__",
+   "externally_connectable": {
+      "ids": [ "flliilndjeohchalpbbcdekjklbdgfkk", "ccbpbkebodcjkknkfkpmfeciinhidaeh", "lfpjfjpklpkigoegkegnpplhlobjolgi", "dalelnnofafalcmkmnhdbigbjjkloabo", "nknfhbemhclggbcbodgchnfbdfhcjmdn" ],
+      "matches": [ "https://passwords.avira.com/*" ]
+   },
+   "host_permissions": [ "\u003Call_urls>" ],
+   "icons": {
+      "128": "images/icons/128x128.png",
+      "16": "images/icons/16x16.png",
+      "48": "images/icons/48x48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnbwZSkjskwpQm71JQ/EFhKGksSCQ4xIOhbPSHUTfQD1musYiJXDHJCFeeVyq1sn4zEXUnVs4RJKbpHT/7UVOdZjsgxllTVgYo4JkDvqhMtE3qmGIYuAL/BZT4Iix7J8qCy6dCcF6sqIiqpf+PWx9LEkNoqPUXly2YMfPWes5sBfcLK3b3FI9gNJZgb3l5Q4gNFFJvdrBpMkSxv0+Hl2CEzeNuZDUhmBb8elzdY1UDfW0rxyVH3dm6f+fZ7xbNFMniDAfbmRa2JoSnV0s0NJntaMMZ2gLRNWxj22PMjxXWrr2Pe6YSEt5s7QyMgxYrJpKTWZ5EYBWoFnCnB5XaeS2uwIDAQAB",
+   "manifest_version": 3,
+   "minimum_chrome_version": "102",
+   "name": "Avira Password Manager",
+   "optional_permissions": [ "privacy", "nativeMessaging", "notifications" ],
+   "permissions": [ "webRequest", "webNavigation", "tabs", "cookies", "contextMenus", "storage", "scripting", "unlimitedStorage", "idle", "alarms" ],
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.21.0.5015",
+   "web_accessible_resources": [ {
+      "matches": [ "\u003Call_urls>" ],
+      "resources": [ "panel.html", "html/*.html", "images/icons/*", "images/icons-gray/*" ]
+   } ]
+}

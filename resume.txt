@@ -1,0 +1,37 @@
+Adnan Saeed
+AI & Machine Learning Engineer
+Github: github.com/AdnanSaeed-85 | LinkedIn: linkedin.com/in/adnan-saeed-ai
+
+SUMMARY
+AI & Machine Learning Engineer dedicated to the next generation of AI moving beyond simple chat to autonomous, tool-using agents. Expert in LangGraph, MCP, and RAG architectures. I combine a strong academic background from the University of Haripur with hands-on experience in building scalable, persistent, and multi-functional AI systems that solve real-world problems.
+
+EXPERIENCE & PROJECTS
+
+AI & Machine Learning Engineer (Internship)
+Developers360 | July-2025 – Oct-2025
+* Built an AI system that automated B2B lead generation and cut prospecting time by 90%.
+* Developed autonomous web agents using LangChain and OpenAI API for real-time data extraction from Google Maps and business websites.
+* Implemented intelligent contact-form detection, personalized messaging, and persistent data storage for large-scale outreach tracking.
+
+Multi-Agent Conversational AI with Integrated RAG
+* Developed a sophisticated AI conversational agent using LangGraph, LangChain, MCP, HITL (Human-in-the-Loop), and RAG for dynamic, multi-functional interactions.
+* Implemented MCP architecture instead of traditional tool calling, integrating specialized MCP servers for RAG-based document querying, real-time stock price retrieval, and expense tracking.
+* Utilized async processing, PostgreSQL for persistent conversation threads, and vector embeddings for efficient information retrieval across multiple domains.
+
+RAG-Based Intelligent Query System
+* Developed a RAG system for natural language querying and document interaction.
+* Implemented semantic search using LangChain, OpenAI Embeddings, and FAISS with optimized chunking strategies for improved retrieval accuracy.
+
+TECHNICAL SKILLS
+* Languages & Databases: Python, SQL, PostgreSQL, SQLite
+* AI Frameworks: LangChain, LangGraph, Model Context Protocol (MCP), TensorFlow, Keras, Scikit-learn
+* Specialized AI: LLMs, RAG Systems, Autonomous AI Agents, Embeddings, HITL
+* Data Science: Pandas, NumPy, Matplotlib, Seaborn, Plotly
+* Tools & Deployment: Streamlit, Git, GitHub
+
+EDUCATION
+THE UNIVERSITY OF HARIPUR (UOH)
+Bachelor's Degree, Artificial Intelligence (2021-2025)
+
+CampusX - DataScience Mentorship Program (DSMP 1.0 & 2.0)
+(2024-Expected 2026)
