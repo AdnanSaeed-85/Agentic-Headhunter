@@ -1,105 +1,149 @@
-=== HEADHUNTER REPORT: LLM Engineer in Dubai (Limit: 2) ===
+=== HEADHUNTER REPORT: LLM Engineer in Sydney (Australia) ===
+Domain: au.indeed.com
 
-🔗 JOB LINK: https://ae.indeed.com/viewjob?jk=872636a7c9c4a0a8
+🔗 JOB LINK: https://au.indeed.com/viewjob?jk=60eeca4aee2321ae
 🤖 ANALYSIS:
 SCORE: 85%
 
-Summary: Adnan Saeed's resume aligns well with the job description at talabat for a data scientist on the algorithms track. His experience as an AI & Machine Learning Engineer, particularly in developing autonomous systems and utilizing advanced architectures like LangGraph and RAG, demonstrates a strong foundation in machine learning and data-driven decision-making. His hands-on projects, such as the RAG-Based Intelligent Query System and Multi-Agent Conversational AI, showcase his ability to work with complex data models and implement innovative solutions, which is crucial for improving product and business decisions at talabat. Additionally, his technical skills in Python, SQL, and various AI frameworks are relevant to the role's requirements. However, the job description emphasizes a focus on data modeling, analysis, and experimentation, areas that could be further highlighted in his experience to strengthen the match. Overall, Adnan's background and skills make him a strong candidate for the position.
+Summary: Adnan Saeed's background as an AI & Machine Learning Engineer aligns well with Tether's focus on innovative technology solutions in the fintech space. His experience in developing autonomous systems and multi-agent conversational AI demonstrates a strong capability in building scalable applications, which is relevant to Tether's mission of pioneering digital finance. Adnan's expertise in frameworks like LangChain and RAG architectures could contribute to Tether's data-driven initiatives, particularly in enhancing AI and peer-to-peer technology. Additionally, his hands-on experience with real-time data extraction and intelligent systems aligns with Tether's goals of optimizing digital transactions and improving user experiences. Overall, Adnan's skills and projects make him a strong candidate for contributing to Tether's innovative product suite and future developments.
+-------------------- FULL JOB DESCRIPTION --------------------
+Join Tether and Shape the Future of Digital Finance
+At Tether, we’re not just building products, we’re pioneering a global financial revolution. Our cutting-edge solutions empower businesses—from exchanges and wallets to payment processors and ATMs—to seamlessly integrate reserve-backed tokens across blockchains. By harnessing the power of blockchain technology, Tether enables you to store, send, and receive digital tokens instantly, securely, and globally, all at a fraction of the cost. Transparency is the bedrock of everything we do, ensuring trust in every transaction.
+Innovate with Tether
+Tether Finance: Our innovative product suite features the world’s most trusted stablecoin, USDT, relied upon by hundreds of millions worldwide, alongside pioneering digital asset tokenization services.
+But that’s just the beginning:
+Tether Power: Driving sustainable growth, our energy solutions optimize excess power for Bitcoin mining using eco-friendly practices in state-of-the-art, geo-diverse facilities.
+Tether Data: Fueling breakthroughs in AI and peer-to-peer technology, we reduce infrastructure costs and enhance global communications with cutting-edge solutions like KEET, our flagship app that redefines secure and private data sharing.
+Tether Education: Democratizing access to top-tier digital learning, we empower individuals to thrive in the digital and gig economies, driving global growth and opportunity.
+Tether Evolution: At the intersection of technology and human potential, we are pushing the boundaries of what is possible, crafting a future where innovation and human capabilities merge in powerful, unprecedented ways.
+Why Join Us?
+Our team is a global talent powerhouse, working remotely from every corner of the world. If you’re passionate about making a mark in the fintech space, this is your opportunity to collaborate with some of the brightest minds, pushing boundaries and setting new standards. We’ve grown fast, stayed lean, and secured our place as a leader in the industry.
+If you have excellent English communication skills and are ready to contribute to the most innovative platform on the planet, Tether is the place for you.
+Are you ready to be part of the future?
+About the job
+As a member of the AI model team, you will drive innovation in architecture development for cutting-edge models of various scales, including small, large, and multi-modal systems. Your work will enhance intelligence, improve efficiency, and introduce new capabilities to advance the field.
+You will have a deep expertise in video generation model architectures with a hands-on, research-driven approach. Your mission is to explore and implement novel techniques and algorithms that lead to groundbreaking advancements: data curation, strengthening baselines, identifying and resolving existing pre-training bottlenecks to push the limits of model performance.
+Responsibilities
+Pioneer multimodal and video-centric research that moves fast and breaks ground, contributing directly to usable prototypes and scalable systems.
+Design and implement novel AI architectures for multimodal language models, integrating text, visual, and audio modalities.
+Engineer scalable training and inference pipelines optimized for large-scale multimodal datasets and distributed GPU systems across thousands of GPUs.
+Optimize systems and algorithms for efficient data processing, model execution, and pipeline throughput.
+Build modular tools for preprocessing, analyzing, and managing multimodal data assets (e.g., images, video, text).
+Collaborate cross-functionally with research and engineering teams to translate cutting-edge model innovations into production-grade solutions.
+Prototype generative AI applications showcasing new capabilities of multimodal foundation models in real-world products.
+Develop benchmarking tools to rigorously evaluate model performance across diverse multimodal tasks.
+Bachelor’s degree in Computer Science, Computer Engineering, or a related technical field, or equivalent practical experience
+Expertise in Python & Pytorch, including practical experience working with the full development pipeline from data processing & data loading to training, inference, and optimization.
+Experience working with large-scale text data, or (bonus) interleaved data spanning audio, video, image, and/or text.
+Direct hands-on experience in developing or benchmarking at least one of the following topics: LLMs, Vision Language Models, Audio Language Models, generative video models .
+Nice to have skills:
+PhD in Computer Vision, Machine Learning, NLP, Computer Science, Applied Statistics, or a closely related field
+Demonstrated expertise in computer vision, video generation foundation model and/or multimodal research.
+First-author publications at leading AI conferences such as CVPR, ICCV, ECCV, ICML, ICLR, NeurIPS etc.
+Important information for candidates
+Recruitment scams have become increasingly common. To protect yourself, please keep the following in mind when applying for roles:
+Apply only through our official channels. We do not use third-party platforms or agencies for recruitment unless clearly stated. All open roles are listed on our official careers page: https://tether.recruitee.com/
+Verify the recruiter’s identity. All our recruiters have verified LinkedIn profiles. If you’re unsure, you can confirm their identity by checking their profile or contacting us through our website.
+Be cautious of unusual communication methods. We do not conduct interviews over WhatsApp, Telegram, or SMS. All communication is done through official company emails and platforms.
+Double-check email addresses. All communication from us will come from emails ending in @tether.to or @tether.io
+We will never request payment or financial details. If someone asks for personal financial information or payment at any point during the hiring process, it is a scam. Please report it immediately.
+When in doubt, feel free to reach out through our official website.
+==================================================
+
+🔗 JOB LINK: https://au.indeed.com/viewjob?jk=789abcdef0123456
+🤖 ANALYSIS:
+SCORE: 85%
+
+Summary: Adnan Saeed's resume aligns well with the requirements for an AI & Machine Learning Engineer position. His experience in developing autonomous web agents and implementing advanced architectures like LangGraph and RAG demonstrates a strong technical foundation. The internship at Developers360 showcases practical skills in automating processes and real-time data extraction, which are valuable in many AI roles. Additionally, his proficiency in relevant programming languages and frameworks, along with hands-on project experience, positions him as a strong candidate for roles focused on innovative AI solutions. However, further details on collaborative projects or team dynamics could enhance his profile.
+-------------------- FULL JOB DESCRIPTION --------------------
+Skip to main content
+Home
+Company reviews
+Sign in
+Employers / Post Job
+Start of main content
+We can’t find this page
+It looks like this page doesn't exist or isn’t available right now. Check the URL for any typos or choose an option below.
+Return home
+Need more help? Contact us
+==================================================
+
+🔗 JOB LINK: https://au.indeed.com/viewjob?jk=d2f2022d15510195
+🤖 ANALYSIS:
+SCORE: 85%
+
+Summary: Adnan Saeed's resume aligns well with the Azure Generative AI Consultant position at NCS Australia. His experience as an AI & Machine Learning Engineer, particularly in developing autonomous web agents and RAG systems, demonstrates a strong foundation in AI technologies relevant to the role. His proficiency in Python and familiarity with AI frameworks like LangChain and LangGraph are directly applicable to the development of intelligent agents on the Azure platform. Additionally, his hands-on experience with RAG architectures and data management using PostgreSQL suggests he can effectively implement the required data pipelines and APIs. However, the resume does not explicitly mention experience with Azure services, CI/CD workflows, or Azure DevOps, which are critical for the role. Overall, Adnan's skills and experience make him a strong candidate, but he may need to emphasize or gain more familiarity with Azure-specific tools and practices to fully meet the job requirements.
 -------------------- FULL JOB DESCRIPTION --------------------
 Company Description
 
-Since launching in Kuwait in 2004, talabat, the leading on-demand food and Q-commerce app for everyday deliveries, has been offering convenience and reliability to its customers. talabat’s local roots run deep, offering a real understanding of the needs of the communities we serve in eight countries across the region.
-We harness innovative technology and knowledge to simplify everyday life for our customers, optimize operations for our restaurants and local shops, and provide our riders with reliable earning opportunities daily.
-Here at talabat, we are building a high performance culture through engaged workforce and growing talent density. We're all about keeping it real and making a difference. Our 6,000+ strong talabaty are on an awesome mission to spread positive vibes. We are proud to be a multi great place to work award winner.
+At NCS Australia, we believe in doing technology services better. Our commitment to quality, focus on people, and willingness to challenge traditional thinking set us apart. Our team brings this belief to life by partnering with our clients and communities to make tomorrow together.
+We are committed to creating an environment that prioritises innovation, collaboration, and purposeful work. Our diverse team is empowered to make a meaningful impact with curiosity, creativity and resilience to shape better outcomes. Join us and accept the challenge of creating a better tomorrow.
 
 Job Description
 
-As the leading delivery company in the region, we have a great responsibility and opportunity to impact the lives of millions of customers, restaurant partners, and riders. To realize our potential, we need to advance our platform to become much more intelligent in how it understands and serves our users.
-As a data scientist on the algorithms track, your mission will be to improve the quality of the decisions made across product and business via relevant, reliable, and actionable data. You will own a particular domain across product and business and will work closely with the corresponding product and business managers as part of a talented team of data scientists and data engineers. You will own the entire data value chain, including logging, data modeling, analysis, reporting, and experimentation. Many of our initiatives will focus on leveraging Generative AI for tasks such as data enrichment, smart content understanding, and automated decision-making to enhance user experiences and business operations.
-Responsibilities
-Leveraging ambiguous business problems as opportunities to drive objective criteria using data.
-Solving complex business problems using the simplest, most appropriate algorithms to deliver business value.
-Designing and implementing effective and impactful machine learning and generative AI systems in production.
-Developing a deep understanding of the product experiences and business processes that make up your area of focus.
-Developing a deep familiarity with the source data and its generating systems through documentation, interacting with the engineering teams, and systematic data profiling.
-Contributing heavily to the design and maintenance of the data models that allow us to measure performance and comprehend performance drivers for your area of focus.
-Working closely with product and business teams to identify important questions that can be answered effectively with data.
-Delivering well-formed, relevant, reliable, and actionable insights and recommendations to support data-driven decision-making through deep analysis and automated reports.
-Designing, planning, and analyzing experiments (A/B and multivariate tests).
-Supporting product and business managers with KPI design and goal setting.
-Mentoring other data scientists in their growth journeys.
-Contributing to improving our ways of working, our tooling, and our internal training programs.
+As an Azure Generative AI Consultant, you will work directly with NCS Australia's clients to solve their most complex challenges. Your primary focus will be the hands-on, end-to-end delivery of bespoke AI solutions on the Azure platform. This involves designing and developing intelligent agents using Azure OpenAI Service, implementing sophisticated Retrieval-Augmented Generation (RAG) patterns with Azure AI Search, and building the robust data pipelines and APIs needed to support these applications using services like Azure Data Factory and Azure API Management.
+Beyond pure development, this role requires you to ensure the operational excellence and strategic success of your solutions. You will implement CI/CD workflows with Azure DevOps, monitor application performance in Azure Monitor, and act as a trusted technical advisor to our clients. A key part of your role will be presenting compelling Proof of Value demonstrations and clearly communicating the business impact of your technical work to a diverse range of client stakeholders.
+As a Generative AI Consultant, you will be at the very forefront of our clients' transformation journey, working with cutting-edge technology to solve complex, real-world problems and delivering tangible impact for our clients.
 
 Qualifications
 
-Requirements
-Technical Experience
-Experience in machine learning, generative AI, deep learning, recommendation systems, pattern recognition, data mining, and artificial intelligence.
-Deep knowledge and experience in ML and GenAI frameworks (e.g. Scikit-learn, XGBoost, LightGBM, CatBoost, SVMs, Keras, TensorFlow, PyTorch, Hugging Face Transformers, LLM fine-tuning).
-Excellent SQL.
-Competence with reproducible data analysis using Python or R.
-Familiarity with data modeling and dimensional design.
-Strong command over the entire data lifecycle, including problem formulation, data auditing, rigorous analysis, interpretation, recommendations, and presentation.
-Familiarity with different types of analysis, including descriptive, exploratory, inferential, causal, and predictive analysis.
-Deep understanding of various experiment design and analysis workflows and the corresponding statistical techniques.
-Familiarity with product data (impressions, events, etc.) and product health measurement (conversion, engagement, retention, etc.).
-Experience with LLMs and NLP-based solutions for data enrichment and smart automation is a plus.
-Familiarity with BigQuery and the Google Cloud Platform is a plus.
-Data engineering and data pipeline development experience (e.g. via Airflow) is a plus.
-Qualifications
-Bachelor's degree in engineering, computer science, technology, or similar fields. A postgraduate degree is a plus but not required.
-4+ years of experience working in data science, machine learning, and Gen AI.
-Experience doing data science in an online consumer product setting is a plus.
-A good problem solver with a ‘figure it out’ growth mindset.
-An excellent collaborator.
-An excellent communicator.
-A strong sense of ownership and accountability.
-A ‘keep it simple’ approach to #makeithappen.
+Proven experience in software development with proficiency in Python.
+Hands-on experience across the Microsoft Azure platform, particularly with Azure Functions, Azure Data Factory, and Azure API Management.
+Strong understanding of Generative AI concepts, RAG patterns, and services like Azure OpenAI Service and Azure AI Search.
+Familiarity with CI/CD principles and tools within Azure DevOps.
+Exceptional communication and presentation skills, with the ability to engage confidently with client stakeholders.
+A natural problem-solver with a proven ability to translate complex business requirements into elegant technical solutions.
+A collaborative spirit, a passion for continuous learning, and the ability to work effectively within a team environment.
+Relevant Microsoft certifications such as Azure AI Engineer Associate (AI-102) or Azure Developer Associate (AZ-204) are highly regarded.
+
+Additional Information
+
+Why join us:
+NCS Australia is where you can feel at home, nurturing your talents and skills as we make tomorrow together, one day at a time. Our benefits include paid parental leave, initiatives focused on your well-being and discounted health insurance. You will also enjoy discounts on various products and services and be regularly recognised and rewarded for high performance. We are committed to your career development through our Capability Fingerprint, industry and partner training programs, special interest groups, and an AI-driven learning platform. No matter where you are in your career, we offer meaningful work and opportunities for growth.
+
+NCS Australia is an equal-opportunity employer, and we take pride in our commitment to valuing and supporting our people and the communities we serve.We are dedicated to attracting, retaining and developing our people regardless of gender identity, ethnicity, sexual orientation, disability and age. Applications are encouraged from all sectors of the community and we strongly encourage applications from the Veterans, Aboriginal and/or Torres Strait Islander community.
+At NCS Australia, we are committed to supporting adjustments throughout the recruitment and selection process, as well as during employment. We actively support and encourage people with disability to apply.
+
+Agencies:
+We’ve got this. We request that you do not contact NCS employees outside of the Talent Acquisition team. NCS exclusively accepts resumes from agencies on our preferred supplier panel through the NCS Agency Portal. Agencies that submit resumes must have a valid fee agreement and be assigned to the particular requisition by the Talent Acquisition team. Any resumes that are submitted outside of this process will become the sole property of NCS. If a candidate is hired outside of this process, no fee or payment will be given.
+
+Work rights and background checks:
+To be eligible for a position with us, applicants will need to have valid work rights for Australia and be willing to undergo a comprehensive background checking process, including probity and police checks
 ==================================================
 
-🔗 JOB LINK: https://ae.indeed.com/viewjob?jk=11483dd0d7fe68e4
+🔗 JOB LINK: https://au.indeed.com/viewjob?jk=2a471d58c79a9a89
 🤖 ANALYSIS:
-SCORE: 85%
+SCORE: 75%
 
-Summary: Adnan Saeed's background as an AI & Machine Learning Engineer aligns well with DataCamp's mission to develop an AI tutoring system. His experience in building autonomous web agents and multi-agent conversational AI demonstrates his capability to create adaptive learning experiences. His expertise in LangGraph, MCP, and RAG architectures is particularly relevant for developing the core AI system that DataCamp envisions. Additionally, his hands-on experience with real-time data extraction and intelligent systems positions him to contribute effectively to the role. Adnan's proactive approach and focus on solving real-world problems resonate with DataCamp's values of ownership and customer focus, making him a strong candidate for the position.
+SUMMARY: Adnan Saeed's resume demonstrates a solid foundation in AI and machine learning, with relevant experience in developing AI systems and projects that align with the job requirements. However, he lacks the 3+ years of experience specified in the job description, as his internship experience is limited to a few months. While he has hands-on experience with frameworks like TensorFlow and LangChain, he does not mention experience with PyTorch or Hugging Face, which are also required. Additionally, there is no indication of familiarity with cloud platforms or containerization technologies, which are essential for the role. Overall, while Adnan has relevant skills and projects, he does not fully meet the experience and technical requirements for the position.
 -------------------- FULL JOB DESCRIPTION --------------------
-About DataCamp
-DataCamp's mission is to empower everyone with the data and AI skills essential for 21st-century success. By providing practical, engaging learning experiences, DataCamp equips learners and organizations of all sizes to harness the power of data and AI. As a trusted partner to over 17 million learners and 6,000+ companies, including 80% of the Fortune 1000, DataCamp is leading the charge in addressing the critical data and AI skills shortage.
-About the role
-Research has consistently shown that one-on-one tutoring dramatically outperforms traditional classroom instruction—a finding known as Bloom's 2 Sigma Problem. Despite decades of awareness, no solution has successfully delivered personalized tutoring at scale. Until now.
-We are building an AI tutoring system designed to emulate and eventually surpass the best human tutors. You will work on the core AI system that delivers real-time, adaptive learning experiences to learners. If you're excited about building the future of human learning, this role is for you.
-About you
-At DataCamp, we seek individuals who embody our core values of data-driven decision-making, action, transparency, ownership, and customer focus. You thrive in a fast-paced, high-performing environment and are driven by a passion for making a meaningful impact. You're adaptable, embracing change and ambiguity with enthusiasm. Your initiative and entrepreneurial spirit push you beyond just meeting targets—you aim to understand the "why" behind our goals and take ownership to drive the business forward. You're a collaborative team player who values transparency and always seeks to improve and innovate. If this sounds like you, we encourage you to apply!
-Responsibilities
-Build and evolve the core AI tutoring system, including prompt architectures, agentic workflows, and real-time adaptive behaviors.
-Run rigorous experimentation and evaluation, developing custom metrics and frameworks to measure learning effectiveness and improve model reliability.
-Design and implement scalable, maintainable software, integrating AI capabilities with platform systems, content pipelines, and user experience components.
-Collaborate cross-functionally with educators, content creators, and product teams to translate pedagogical goals into technical solutions.
-Prototype and productionize novel model interactions, leveraging emerging research and capabilities to advance the tutor's intelligence.
-Ensure quality, safety, and observability through monitoring, testing, guardrails, and iterative refinement of model behavior.
-Share knowledge and elevate teammates, contributing to a culture of clarity, simplicity, and continuous learning.
-Qualifications
-Technical
-1+ years building complex LLM-based systems, with strong prompt engineering intuition and experience designing agentic workflows.
-Ability to design meaningful evaluation methods, including custom metrics and frameworks when off-the-shelf options fall short.
-Strong software engineering fundamentals, architectural thinking, and fluency in Python; comfortable working with production infrastructure, cloud environments, and CI/CD.
-Actively follows AI research and emerging capabilities, applying new ideas creatively to real problems.
-Product & Pedagogy
-Strong empathy for learners and content creators; able to translate pedagogical goals into system behavior and product decisions.
-Ability to reason holistically across AI behavior, content structure, platform features, and user experience.
-Familiarity with learning science or a desire to develop expertise.
-Character & Collaboration
-Drawn to difficult, ambiguous problems with no clear blueprint; persistent in exploring and refining solutions.
-Preference for elegance and simplicity in system design.
-Communicates clearly across mediums and enjoys mentoring and collaborating in small, high-ownership teams.
-Why Datacamp?
-Joining DataCamp means becoming part of a dynamic, creative, and international start-up. Here are just a few of the reasons why you'll love being on our team:
-Exciting challenges: Face new technical challenges daily, keeping your work engaging and rewarding.
-Competitive compensation: We offer a competitive salary with attractive benefits.
-Flexibility: Benefit from flexible working hours because the future is flexible!
-Continuous learning: Access a yearly learning budget for conferences & training to support your professional growth.
-Global retreats: Participate in international company retreats, fostering a global team spirit.
-Equipment: Yearly refreshment of your IT Equipment budget for your home working setup.
-Amazing team: Collaborate with a truly exceptional team—seriously, we're awesome!
+Required Qualifications
+Bachelor’s or Master’s degree in Computer Science, Artificial Intelligence, Machine Learning, or a related field.
+3+ years of experience in AI/ML development, with at least 1+ year of hands-on experience in generative AI.
+Strong proficiency in Python and AI/ML frameworks such as TensorFlow, PyTorch, and Hugging Face.
+Exposure working with transformer-based architectures like GPT, BERT, and diffusion models.
+Solid understanding of deep learning, NLP, and computer vision techniques.
+Knowledge of cloud platforms (AWS, GCP, or Azure) and containerization (Docker, Kubernetes).
+Familiarity with model deployment, APIs, and MLOps tools for CI/CD automation.
+Strong problem-solving skills and ability to work in an agile, col laborative environment.
+Key Responsibilities
+Research, design, and develop generative AI models, including Large Language Models (LLMs), GANs, VAEs, and diffusion models.
+Fine-tune and optimize pre-trained models to meet business requirements.
+Collaborate with cross-functional teams to integrate AI models into production-ready applications.
+Develop scalable and efficient pipelines for data preprocessing, model training, and inference.
+Stay updated with the latest advancements in AI/ML and contribute to research initiatives.
+Ensure AI solutions are explainable, ethical, and comply with regulatory standards.
+Optimize model performance in terms of accuracy, latency, and cost-effectiveness.
+Implement and maintain MLOps be st practices for continuous deployment and monitoring.
+Location
+Sydney
+Job Function
+TECHNOLOGY
+Role
+Engineer
+Job Id
+383002
+Desired Skills
+Artificial Intelligence | Machine Learning | Python
 ==================================================
 
