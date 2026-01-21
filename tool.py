@@ -148,7 +148,7 @@ def run_headhunter_agent(job_title: str, location: str, job_limit: int):
 
 @tool
 def read_good_jobs_report():
-    """Reads the 'good_jobs.txt' file."""
+    """Please Reads the 'good_jobs.txt' file."""
     try:
         if not os.path.exists("good_jobs.txt"):
             return "❌ No job report found."
