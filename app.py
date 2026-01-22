@@ -1,4 +1,3 @@
-import chainlit as cl
 from langgraph.graph import START, END, StateGraph
 from langgraph.checkpoint.postgres import PostgresSaver
 from langgraph.store.postgres import PostgresStore
@@ -6,12 +5,10 @@ from langgraph.types import Command, interrupt
 from langgraph.prebuilt import ToolNode
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage, ToolMessage, AIMessage, RemoveMessage
-from typing import TypedDict, Annotated, List, Optional
+from typing import TypedDict, Annotated
 from langgraph.graph.message import add_messages
 from langchain_core.runnables import RunnableConfig
-from chainlit.data.sql_alchemy import SQLAlchemyDataLayer
-import uuid
-from tool import run_headhunter_agent, read_good_jobs_report
+from chainlit_tool import run_headhunter_agent, read_good_jobs_report
 from prompts import MEMORY_PROMPT, SYSTEM_PROMPT_TEMPLATE
 from CONFIG import OPENAI_MODEL, TEMPERATURE, POSTGRES_DB, POSTGRES_PASSWORD, POSTGRES_USER
 from dotenv import load_dotenv
@@ -19,33 +16,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ==============================================================================
-# 1. DATABASE SETUP (CRITICAL FIX)
-# ==============================================================================
-
-# URI for LangGraph (SYNC) - Keeps sslmode=disable for psycopg
-DB_URI_SYNC = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}?sslmode=disable"
-
-# URI for Chainlit Sidebar (ASYNC) - REMOVED sslmode=disable
-# This MUST utilize the 'asyncpg' driver
-DB_URI_ASYNC = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}"
-
-# 🟢 FORCE SIDEBAR CONNECTION
-# We removed the try/except block. If this fails, the app will crash with a clear error.
-cl.data_layer = SQLAlchemyDataLayer(conninfo=DB_URI_ASYNC)
-
-# ==============================================================================
-# 2. AUTHENTICATION (REQUIRED FOR SIDEBAR)
-# ==============================================================================
-
-@cl.password_auth_callback
-def auth(username, password):
-    # Login: admin / admin
-    if username == "admin" and password == "admin":
-        return cl.User(identifier="admin", metadata={"role": "admin", "provider": "credentials"})
-    return None
-
-# ==============================================================================
-# 3. LANGGRAPH SETUP
+# 1. SETUP & CONFIGURATION
 # ==============================================================================
 
 class state_class(TypedDict):
@@ -55,8 +26,17 @@ openai_llm = ChatOpenAI(model=OPENAI_MODEL, temperature=TEMPERATURE)
 tools = [run_headhunter_agent, read_good_jobs_report]
 openai_tooling = openai_llm.bind_tools(tools)
 
+DB_URI = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}?sslmode=disable"
+
+# ==============================================================================
+# 2. NODES (With Self-Healing Logic)
+# ==============================================================================
+
 def chat_node(state: state_class, config: RunnableConfig, store):
-    """The Brain (with Self-Healing)"""
+    """
+    The Brain (with Self-Healing).
+    Detects if the previous run crashed and 'heals' the history before calling OpenAI.
+    """
     user_id = config['configurable']['user_id']
     namespace = ('user', user_id, 'details')
     items = store.search(namespace)
@@ -65,157 +45,116 @@ def chat_node(state: state_class, config: RunnableConfig, store):
     system_msg = SystemMessage(content=SYSTEM_PROMPT_TEMPLATE.format(user_details_content=user_details))
     messages = state["messages"]
 
-    # 🩹 Deep Self-Healing Logic
+    # --- 🩹 SELF-HEALING LOGIC ---
+    # Check if the last message was a Tool Call that never got a response (Dangling)
+    # This happens if the app crashed or was stopped during an interrupt.
     if messages and isinstance(messages[-1], AIMessage) and messages[-1].tool_calls:
-        sanitized_messages = []
-        for i, msg in enumerate(messages):
-            sanitized_messages.append(msg)
-            if isinstance(msg, AIMessage) and msg.tool_calls:
-                is_last = (i == len(messages) - 1)
-                next_is_not_tool = False
-                if not is_last:
-                    next_msg = messages[i+1]
-                    if not isinstance(next_msg, ToolMessage):
-                        next_is_not_tool = True
-                
-                if is_last or next_is_not_tool:
-                    for tc in msg.tool_calls:
-                        sanitized_messages.append(ToolMessage(
-                            tool_call_id=tc['id'], 
-                            content="❌ System Error: Interrupted. Please try again."
-                        ))
-
+        print("🩹 Healing broken history (Found dangling tool call)...")
+        
+        # Create a temporary sanitized history
+        # We append a "Fake" tool failure to satisfy OpenAI's requirements
+        sanitized_messages = list(messages)
+        for tool_call in messages[-1].tool_calls:
+            sanitized_messages.append(
+                ToolMessage(
+                    tool_call_id=tool_call['id'],
+                    content="❌ System Error: The previous tool execution was interrupted. Please try again."
+                )
+            )
+        
+        # Invoke LLM with the healed history
         response = openai_tooling.invoke([system_msg] + sanitized_messages)
     else:
+        # Normal Flow (History is healthy)
         response = openai_tooling.invoke([system_msg] + messages)
         
     return {"messages": [response]}
 
 def human_approval_node(state: state_class):
+    """
+    The Gatekeeper: Intercepts tool calls for payment approval.
+    
+    CRITICAL FIX: When rejecting, we must REMOVE the AIMessage with tool_calls
+    to prevent OpenAI from seeing an orphaned tool_call without responses.
+    """
     last_msg = state["messages"][-1]
+    
+    # If no tool calls, just pass through
     if not hasattr(last_msg, "tool_calls") or not last_msg.tool_calls:
         return {} 
     
+    # Check if ANY tool call is the paid one
     expensive_call = next((tc for tc in last_msg.tool_calls if tc["name"] == "run_headhunter_agent"), None)
     
     if expensive_call:
+        # Calculate Cost
         args = expensive_call.get("args", {})
         limit = args.get("job_limit", 1)
         cost = limit * 2.0
         
+        # 🛑 TRIGGER INTERRUPT 🛑
+        print(f"Asking for approval: ${cost}")
         permission = interrupt(f"Approve charge of ${cost}?")
         
         if permission != "yes":
+            # ✅ CRITICAL FIX: Remove the AIMessage with tool_calls and replace with rejection
+            # This prevents the "tool_calls must be followed by tool messages" error
+            
+            # Get the ID of the message we need to remove
             msg_to_remove_id = last_msg.id
+            
             return {
                 "messages": [
+                    # Remove the AIMessage with tool_calls
                     RemoveMessage(id=msg_to_remove_id),
-                    AIMessage(content=f"❌ Payment of ${cost} declined. Search cancelled.")
+                    # Add a clean rejection message
+                    AIMessage(content=f"❌ Payment of ${cost} was declined by the user. The job search has been cancelled. How else can I help you?")
                 ]
             }
+
+    # If approved (or only free tools), do nothing. 
+    # The graph will flow to 'tools' node naturally.
     return {}
 
 def route_after_approval(state: state_class):
+    """Decides where to go after approval node."""
     last_msg = state["messages"][-1]
+    
+    # If the last message is a regular AIMessage (rejection case), go back to chat
     if isinstance(last_msg, AIMessage) and not (hasattr(last_msg, "tool_calls") and last_msg.tool_calls):
-        return END 
+        return END  # Conversation ends naturally after rejection
+    
+    # If it's still an AI Message with tool calls (Approved), go to Tools
     if isinstance(last_msg, AIMessage) and hasattr(last_msg, "tool_calls") and last_msg.tool_calls:
         return "tools"
+    
     return END
+
+# ==============================================================================
+# 3. GRAPH BUILD
+# ==============================================================================
 
 builder = StateGraph(state_class)
 builder.add_node('chat_node', chat_node)
 builder.add_node('human_approval', human_approval_node)
 builder.add_node('tools', ToolNode(tools))
+
 builder.add_edge(START, 'chat_node')
 builder.add_edge('chat_node', 'human_approval')
 builder.add_conditional_edges('human_approval', route_after_approval)
 builder.add_edge('tools', 'chat_node')
 
-async def run_graph_safely(inputs, config, resume_value=None):
-    with PostgresStore.from_conn_string(DB_URI_SYNC) as store, PostgresSaver.from_conn_string(DB_URI_SYNC) as checkpointer:
-        store.setup()
-        checkpointer.setup()
-        graph = builder.compile(store=store, checkpointer=checkpointer)
-        
-        if resume_value:
-            exec_input = Command(resume=resume_value)
-        else:
-            exec_input = inputs
-
-        res = await cl.make_async(graph.invoke)(exec_input, config)
-        snapshot = graph.get_state(config)
-        return res, snapshot
-
 # ==============================================================================
-# 4. CHAINLIT UI LOGIC
+# 4. GRAPH COMPILATION FUNCTION (For External Use)
 # ==============================================================================
 
-@cl.on_chat_start
-async def on_chat_start():
-    user = cl.user_session.get("user")
-    user_id = user.identifier if user else "guest"
-    
-    # Check if a thread ID was passed in context (from sidebar click)
-    try:
-        thread_id = cl.context.session.thread_id 
-    except:
-        thread_id = str(uuid.uuid4())
+def create_graph(store, checkpointer):
+    """
+    Compiles and returns the graph with the given store and checkpointer.
+    This function can be called from the Chainlit UI or any other interface.
+    """
+    return builder.compile(store=store, checkpointer=checkpointer)
 
-    cl.user_session.set("config", {
-        "configurable": {
-            "user_id": user_id,
-            "thread_id": thread_id 
-        }
-    })
-    await cl.Message(content="🤖 **Agent HeadHunter Online**").send()
-
-@cl.on_chat_resume
-async def on_chat_resume(thread):
-    # This function is triggered when you click a history item in the sidebar
-    user = cl.user_session.get("user")
-    user_id = user.identifier if user else "guest"
-    
-    # Chainlit passes the thread object; we extract the ID
-    thread_id = thread["id"] if isinstance(thread, dict) else thread.id
-    
-    cl.user_session.set("config", {
-        "configurable": {
-            "user_id": user_id, 
-            "thread_id": thread_id
-        }
-    })
-
-@cl.on_message
-async def on_message(message: cl.Message):
-    config = cl.user_session.get("config")
-    inputs = {"messages": [HumanMessage(content=message.content)]}
-    
-    res, snapshot = await run_graph_safely(inputs, config)
-    
-    if snapshot.next and len(snapshot.tasks) > 0 and snapshot.tasks[0].interrupts:
-        val = snapshot.tasks[0].interrupts[0].value
-        actions = [
-            cl.Action(name="approve", value="yes", label="✅ Pay", payload={"value": "yes"}),
-            cl.Action(name="reject", value="no", label="❌ Deny", payload={"value": "no"})
-        ]
-        await cl.Message(content=f"⚠️ **ACTION REQUIRED:** {val}", actions=actions).send()
-    else:
-        bot_response = res["messages"][-1].content
-        await cl.Message(content=bot_response).send()
-
-@cl.action_callback("approve")
-@cl.action_callback("reject")
-async def on_action(action: cl.Action):
-    config = cl.user_session.get("config")
-    await cl.Message(content=f"You selected: **{action.label}**").send()
-    
-    try:
-        resume_value = action.payload.get("value")
-        res, snapshot = await run_graph_safely(None, config, resume_value=resume_value)
-        
-        if res and "messages" in res and len(res["messages"]) > 0:
-            bot_response = res["messages"][-1].content
-            await cl.Message(content=bot_response).send()
-    except Exception as e:
-        await cl.Message(content=f"❌ Error resuming graph: {e}").send()
+def get_db_uri():
+    """Returns the database URI for external use."""
+    return DB_URI
