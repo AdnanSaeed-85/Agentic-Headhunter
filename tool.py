@@ -1,5 +1,7 @@
 import undetected_chromedriver as uc
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import time
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage
@@ -7,17 +9,11 @@ from langchain_core.tools import tool
 from dotenv import load_dotenv
 import re
 import os
-from langgraph.types import interrupt
-from langchain_openai import ChatOpenAI
 
-# Load API Keys
 load_dotenv()
-
-# Config
 MATCH_THRESHOLD = 50
 
-# ------------------- Helper Functions -------------------
-
+# --- Helper Functions ---
 def _read_my_resume():
     try:
         with open("resume.txt", "r", encoding="utf-8") as f:
@@ -34,183 +30,211 @@ def _extract_score(text):
     return 0
 
 def _get_smart_domain(country_input: str):
-    """
-    Intelligently maps any country variation to the correct Indeed domain.
-    Handles 'USA', 'us', 'United States' -> indeed.com
-    """
     c = country_input.lower().strip()
-    
-    # 1. Common Synonyms Map
     mapping = {
-        # North America
-        "usa": "indeed.com", "us": "indeed.com", "united states": "indeed.com", "america": "indeed.com",
-        "canada": "ca.indeed.com", "ca": "ca.indeed.com",
-        "mexico": "indeed.com.mx", "mx": "indeed.com.mx",
-        
-        # Europe
-        "uk": "indeed.co.uk", "united kingdom": "indeed.co.uk", "britain": "indeed.co.uk",
-        "germany": "de.indeed.com", "de": "de.indeed.com", "deutschland": "de.indeed.com",
-        "france": "indeed.fr", "fr": "indeed.fr",
-        "italy": "it.indeed.com", "it": "it.indeed.com",
-        "spain": "indeed.es", "es": "indeed.es",
-        "netherlands": "indeed.nl", "nl": "indeed.nl", "holland": "indeed.nl",
-        
-        # Asia / Middle East
-        "uae": "ae.indeed.com", "united arab emirates": "ae.indeed.com", "dubai": "ae.indeed.com",
-        "india": "in.indeed.com", "in": "in.indeed.com",
-        "pakistan": "pk.indeed.com", "pk": "pk.indeed.com",
-        "japan": "jp.indeed.com", "jp": "jp.indeed.com",
-        "singapore": "indeed.com.sg", "sg": "indeed.com.sg",
-        
-        # Oceania
-        "australia": "au.indeed.com", "au": "au.indeed.com",
-        "new zealand": "indeed.co.nz", "nz": "indeed.co.nz"
+        "usa": "indeed.com", "us": "indeed.com", "united states": "indeed.com",
+        "canada": "ca.indeed.com",
+        "uk": "indeed.co.uk", "united kingdom": "indeed.co.uk",
+        "uae": "ae.indeed.com", "dubai": "ae.indeed.com",
+        "india": "in.indeed.com",
+        "pakistan": "pk.indeed.com",
+        "australia": "au.indeed.com"
     }
-    
-    # 2. Return match OR Default to Global (indeed.com)
     return mapping.get(c, "indeed.com")
 
-# ------------------- Main Agent Tool -------------------
-
+# --- Main Tool ---
 @tool
 def run_headhunter_agent(job_title: str, country: str, location: str, job_limit: int):
     """
-    Runs the autonomous job search.
-    Mandatory parameters:
-    - job_title: e.g. "AI Engineer"
-    - country: e.g. "UAE", "USA", "UK" (Critical for correct domain)
-    - location: e.g. "Dubai", "London"
-    - job_limit: Maximum number of jobs to apply for (must be >0)
+    Runs the autonomous job search. 
+    Use this to find jobs on Indeed.
     """
-
-    # 1. VALIDATION
     if not all([job_title, country, location]):
-        return "❌ Error: Missing arguments. I need Job Title, Country, and Location."
+        return "❌ Error: Missing arguments."
     
-    if not isinstance(job_limit, int) or job_limit <= 0:
-        return "❌ Error: job_limit must be a positive integer."
-
-    # 2. PAYMENT GATE (HITL)
-    cost = job_limit * 2.0
-    print(f"\n✋ STOP! Checking Payment Authorization...")
-    print(f"   Request: {job_limit} jobs x $2 = ${cost} Total.")
-
-    user_decision = interrupt(f"Please approve the charge of ${cost} for {job_limit} applications. (yes/no)")
-
-    if str(user_decision).lower() not in ['yes', 'y', 'confirm', 'ok']:
-        return "❌ Transaction Cancelled. User declined the payment."
-
-    print(f"✅ Payment Approved! Starting Agent for {job_limit} jobs...")
-
-    # 3. SETUP
+    print(f"🚀 AGENT STARTING: {job_title} in {location}, {country}...")
+    
     my_resume = _read_my_resume()
     if not my_resume:
-        return "❌ Error: 'resume.txt' not found."
+        return "❌ Error: 'resume.txt' not found. Please create a resume.txt file in the project directory."
 
-    # RESTORED GROQ (Unless you really want OpenAI, then swap this line)
-    # llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+    llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
     
-    driver = uc.Chrome(headless=False, use_subprocess=True, version_main=143)
+    # Initialize driver with better options
+    options = uc.ChromeOptions()
+    # options.add_argument('--headless')  # Uncomment to run without UI
+    driver = None
 
     try:
-        # 4. INTELLIGENT DOMAIN SELECTION
+        driver = uc.Chrome(headless=False, use_subprocess=True, version_main=143)
+        wait = WebDriverWait(driver, 10)
+        
         domain = _get_smart_domain(country)
-        # Handle full URL if map returned full domain, or construct it
         base_url = domain if "http" in domain else f"https://{domain}"
         
-        print(f"🚀 AGENT ACTIVATED: Searching '{job_title}' in '{location}' on {base_url}...")
-        
-        url = f"{base_url}/jobs?q={job_title.replace(' ', '+')}&l={location}"
+        # Build search URL
+        url = f"{base_url}/jobs?q={job_title.replace(' ', '+')}&l={location.replace(' ', '+')}"
+        print(f"🔍 Searching: {url}")
         driver.get(url)
-
-        print("\n🛑 MANUAL CHECK: Click Cloudflare if needed. Press ENTER in terminal when jobs are visible.")
-        input("✅ Press ENTER to continue...")
-
-        # 5. SCRAPING
-        job_cards = driver.find_elements(By.CSS_SELECTOR, "h2.jobTitle a")
+        
+        # Wait for page to load
+        time.sleep(8)  # Increased wait time for Indeed to load
+        
+        # Try multiple selectors for job cards
+        job_cards = []
+        try:
+            # Try modern Indeed selector first
+            job_cards = wait.until(EC.presence_of_all_elements_located((By.CSS_SELECTOR, "h2.jobTitle a")))
+        except:
+            try:
+                # Fallback selector
+                job_cards = driver.find_elements(By.CLASS_NAME, "jcs-JobTitle")
+            except:
+                try:
+                    # Another fallback
+                    job_cards = driver.find_elements(By.CSS_SELECTOR, "a[data-jk]")
+                except Exception as e:
+                    print(f"❌ Could not find job cards: {e}")
+        
         if not job_cards:
-            job_cards = driver.find_elements(By.CLASS_NAME, "jcs-JobTitle")
-        if not job_cards:
-            job_cards = driver.find_elements(By.XPATH, "//a[contains(@href, '/viewjob') or contains(@href, '/rc/clk')]")
-
-        # Clean Links
+            # Take screenshot for debugging
+            driver.save_screenshot("debug_screenshot.png")
+            print("❌ No job cards found. Screenshot saved as debug_screenshot.png")
+            return f"❌ No jobs found for '{job_title}' in {location}. The page might have a different structure. Check debug_screenshot.png"
+        
+        print(f"✅ Found {len(job_cards)} job cards")
+        
+        # Extract job links
         job_links = []
-        for job in job_cards:
+        for job in job_cards[:job_limit * 3]:  # Get more links than needed as backup
             try:
                 href = job.get_attribute("href")
-                if href:
-                    if "jk=" in href:
-                        job_id = href.split("jk=")[1].split("&")[0]
-                        # Construct link using the detected domain
-                        clean_domain = domain.replace("https://", "").replace("/", "")
-                        job_links.append(f"https://{clean_domain}/viewjob?jk={job_id}")
-                    else:
-                        job_links.append(href)
-            except:
+                if href and "jk=" in href:
+                    job_id = href.split("jk=")[1].split("&")[0]
+                    clean_domain = domain.replace("https://", "").replace("/", "")
+                    job_links.append(f"https://{clean_domain}/viewjob?jk={job_id}")
+                elif href and "/rc/clk" in href:
+                    # Alternative Indeed link format
+                    job_links.append(href)
+            except Exception as e:
+                print(f"⚠️ Error extracting link: {e}")
                 continue
 
         job_links = list(set(job_links))[:job_limit]
-
-        # 6. ANALYSIS
+        
+        if not job_links:
+            return f"❌ Could not extract job links from {len(job_cards)} cards found."
+        
+        print(f"📋 Processing {len(job_links)} job links...")
+        
         good_matches = 0
+        
+        # Create report file
         with open("good_jobs.txt", "w", encoding="utf-8") as f:
-            f.write(f"=== HEADHUNTER REPORT: {job_title} in {location} ({country}) ===\n")
-            f.write(f"Domain: {domain}\n\n")
+            f.write(f"=== JOB SEARCH REPORT ===\n")
+            f.write(f"Job Title: {job_title}\n")
+            f.write(f"Location: {location}, {country}\n")
+            f.write(f"Date: {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
 
+        # Process each job
         for i, link in enumerate(job_links):
-            print(f"[{i+1}/{len(job_links)}] Checking...")
+            print(f"🔍 Analyzing job {i+1}/{len(job_links)}...")
             try:
                 driver.get(link)
-                time.sleep(2)
-
+                time.sleep(3)  # Wait for job page to load
+                
+                # Extract job description with multiple fallback strategies
+                jd = ""
                 try:
-                    jd = driver.find_element(By.ID, "jobDescriptionText").text
+                    jd = wait.until(EC.presence_of_element_located((By.ID, "jobDescriptionText"))).text
                 except:
-                    jd = driver.find_element(By.TAG_NAME, "body").text[:4000]
+                    try:
+                        jd = driver.find_element(By.CLASS_NAME, "jobsearch-jobDescriptionText").text
+                    except:
+                        try:
+                            jd = driver.find_element(By.TAG_NAME, "body").text[:5000]
+                        except:
+                            print(f"⚠️ Could not extract job description for {link}")
+                            continue
+                
+                if not jd or len(jd) < 100:
+                    print(f"⚠️ Job description too short, skipping...")
+                    continue
+                
+                # Get job title from page
+                try:
+                    job_title_elem = driver.find_element(By.CSS_SELECTOR, "h1.jobsearch-JobInfoHeader-title")
+                    actual_title = job_title_elem.text
+                except:
+                    actual_title = job_title
 
-                prompt = f"""
-                RESUME: {my_resume[:2000]}
-                JOB: {jd[:2000]}
-                TASK: Analyze match. Format: "SCORE: 85%" then a summary.
-                """
+                # Score the match using LLM
+                prompt = f"""You are a resume matching expert. Score how well this resume matches this job (0-100%).
+
+RESUME:
+{my_resume[:3000]}
+
+JOB DESCRIPTION:
+{jd[:3000]}
+
+Respond ONLY with: SCORE: X%
+Where X is a number between 0-100."""
+
                 response = llm.invoke([HumanMessage(content=prompt)]).content
                 score = _extract_score(response)
-
-                print(f"   👉 Score: {score}%")
+                
+                print(f"   Score: {score}% - {actual_title}")
 
                 if score >= MATCH_THRESHOLD:
                     good_matches += 1
                     with open("good_jobs.txt", "a", encoding="utf-8") as f:
-                        f.write(f"🔗 JOB LINK: {link}\n🤖 ANALYSIS:\n{response}\n")
-                        f.write("-" * 20 + " FULL JOB DESCRIPTION " + "-" * 20 + "\n")
-                        f.write(f"{jd}\n")
-                        f.write("=" * 50 + "\n\n")
-            
+                        f.write(f"\n{'='*60}\n")
+                        f.write(f"Job #{good_matches}\n")
+                        f.write(f"Title: {actual_title}\n")
+                        f.write(f"Match Score: {score}%\n")
+                        f.write(f"Link: {link}\n")
+                        f.write(f"{'='*60}\n")
+                        
             except Exception as e:
-                print(f"⚠️ Error checking job: {e}")
+                print(f"⚠️ Error processing {link}: {str(e)}")
+                continue
 
+        print(f"\n✅ Search complete! Found {good_matches} good matches out of {len(job_links)} jobs analyzed.")
+        
     except Exception as e:
-        return f"Agent failed: {str(e)}"
+        error_msg = f"❌ Agent failed: {str(e)}"
+        print(error_msg)
+        if driver:
+            try:
+                driver.save_screenshot("error_screenshot.png")
+                print("Error screenshot saved as error_screenshot.png")
+            except:
+                pass
+        return error_msg
+        
     finally:
-        try:
-            # Force kill the browser process to avoid WinError 6
-            driver.quit()
-        except OSError:
-            pass  # Ignore Windows "Handle Invalid" errors
-        except Exception:
-            pass
+        if driver:
+            try:
+                print("🛑 Closing browser...")
+                time.sleep(2)  # Give user time to see results
+                driver.quit()
+            except:
+                pass
 
-    return f"✅ DONE! Processed {len(job_links)} jobs. Found {good_matches} matches."
+    if good_matches == 0:
+        return f"✅ Search completed! Analyzed {len(job_links)} jobs but found no matches above {MATCH_THRESHOLD}% threshold. Try lowering your criteria or broadening the search."
+    
+    return f"✅ SUCCESS! Found {good_matches} matching job(s) out of {len(job_links)} analyzed. Check 'good_jobs.txt' for details."
 
 
 @tool
 def read_good_jobs_report():
-    """Reads the 'good_jobs.txt' file."""
+    """Reads the 'good_jobs.txt' file to see found jobs."""
     try:
-        if not os.path.exists("good_jobs.txt"):
-            return "❌ No job report found."
         with open("good_jobs.txt", "r", encoding="utf-8") as f:
-            return f.read()
-    except Exception as e:
-        return f"Error: {str(e)}"
+            content = f.read()
+            if not content or len(content) < 50:
+                return "📄 Report exists but appears empty. No jobs have been found yet."
+            return content
+    except FileNotFoundError:
+        return "❌ No report found. Run a job search first using the run_headhunter_agent tool."
