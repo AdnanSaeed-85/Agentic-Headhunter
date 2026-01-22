@@ -19,20 +19,19 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # ==============================================================================
-# 1. DATABASE SETUP
+# 1. DATABASE SETUP (CRITICAL FIX)
 # ==============================================================================
 
-# URI for LangGraph (SYNC)
+# URI for LangGraph (SYNC) - Keeps sslmode=disable for psycopg
 DB_URI_SYNC = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}?sslmode=disable"
 
-# URI for Chainlit Sidebar (ASYNC)
-DB_URI_ASYNC = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}?sslmode=disable"
+# URI for Chainlit Sidebar (ASYNC) - REMOVED sslmode=disable
+# This MUST utilize the 'asyncpg' driver
+DB_URI_ASYNC = f"postgresql+asyncpg://{POSTGRES_USER}:{POSTGRES_PASSWORD}@localhost:5442/{POSTGRES_DB}"
 
-# Enable Sidebar History
-try:
-    cl.data_layer = SQLAlchemyDataLayer(conninfo=DB_URI_ASYNC)
-except Exception as e:
-    print(f"⚠️ Sidebar Database Error: {e}")
+# 🟢 FORCE SIDEBAR CONNECTION
+# We removed the try/except block. If this fails, the app will crash with a clear error.
+cl.data_layer = SQLAlchemyDataLayer(conninfo=DB_URI_ASYNC)
 
 # ==============================================================================
 # 2. AUTHENTICATION (REQUIRED FOR SIDEBAR)
@@ -40,8 +39,7 @@ except Exception as e:
 
 @cl.password_auth_callback
 def auth(username, password):
-    # This acts as a simple login. 
-    # Login with username "admin" and password "admin"
+    # Login: admin / admin
     if username == "admin" and password == "admin":
         return cl.User(identifier="admin", metadata={"role": "admin", "provider": "credentials"})
     return None
@@ -81,7 +79,6 @@ def chat_node(state: state_class, config: RunnableConfig, store):
                         next_is_not_tool = True
                 
                 if is_last or next_is_not_tool:
-                    print(f"🩹 Healing dangling tool call ID: {msg.tool_calls[0]['id']}")
                     for tc in msg.tool_calls:
                         sanitized_messages.append(ToolMessage(
                             tool_call_id=tc['id'], 
@@ -106,7 +103,6 @@ def human_approval_node(state: state_class):
         limit = args.get("job_limit", 1)
         cost = limit * 2.0
         
-        print(f"Asking for approval: ${cost}")
         permission = interrupt(f"Approve charge of ${cost}?")
         
         if permission != "yes":
@@ -157,11 +153,10 @@ async def run_graph_safely(inputs, config, resume_value=None):
 
 @cl.on_chat_start
 async def on_chat_start():
-    # 🟢 Get the authenticated user
     user = cl.user_session.get("user")
     user_id = user.identifier if user else "guest"
     
-    # Use Chainlit's Thread ID for the Sidebar
+    # Check if a thread ID was passed in context (from sidebar click)
     try:
         thread_id = cl.context.session.thread_id 
     except:
@@ -169,18 +164,19 @@ async def on_chat_start():
 
     cl.user_session.set("config", {
         "configurable": {
-            "user_id": user_id,  # Now linked to "admin"
+            "user_id": user_id,
             "thread_id": thread_id 
         }
     })
-    await cl.Message(content="🤖 **Agent HeadHunter Online** (History Enabled)").send()
+    await cl.Message(content="🤖 **Agent HeadHunter Online**").send()
 
 @cl.on_chat_resume
 async def on_chat_resume(thread):
-    # 🟢 Restore session when clicking sidebar
+    # This function is triggered when you click a history item in the sidebar
     user = cl.user_session.get("user")
     user_id = user.identifier if user else "guest"
     
+    # Chainlit passes the thread object; we extract the ID
     thread_id = thread["id"] if isinstance(thread, dict) else thread.id
     
     cl.user_session.set("config", {
